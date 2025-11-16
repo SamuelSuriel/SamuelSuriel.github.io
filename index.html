@@ -1,17 +1,751 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My PSite</title>
-    <link rel="stylesheet" href="css/app.css">
+    <title>Samuel RS - Software Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #2c2c2c;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            padding: 60px 40px;
+            background-color: #ffffff;
+            position: fixed;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: background-color 0.3s ease;
+            overflow-y: auto;
+        }
+
+        body.dark .sidebar {
+            background-color: #242424;
+        }
+
+        .logo {
+            margin-bottom: 60px;
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: -1px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            font-size: 13px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        body.dark .logo p {
+            color: #999;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-bottom: 20px;
+        }
+
+        nav ul li a {
+            color: #2c2c2c;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            transition: color 0.2s ease;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        body.dark nav ul li a {
+            color: #e0e0e0;
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: #2c2c2c;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        body.dark nav ul li a::before {
+            background-color: #e0e0e0;
+        }
+
+        nav ul li a:hover {
+            color: #666;
+        }
+
+        body.dark nav ul li a:hover {
+            color: #aaa;
+        }
+
+        nav ul li a:hover::before {
+            opacity: 1;
+        }
+
+        .theme-toggle {
+            margin-top: auto;
+            padding-top: 40px;
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .theme-toggle:hover {
+            color: #666;
+        }
+
+        body.dark .theme-toggle:hover {
+            color: #ccc;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 60px 80px;
+        }
+
+        section {
+            min-height: 100vh;
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        section h2 {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 60px;
+            letter-spacing: -2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+        }
+
+        .noise-bg {
+            position: absolute;
+            top: 0;
+            right: -80px;
+            width: 50%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        body.dark .noise-bg {
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,.03) 2px, rgba(255,255,255,.03) 4px);
+        }
+
+        .hero-content {
+            max-width: 600px;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 300;
+            letter-spacing: -3px;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .hero .subtitle {
+            font-size: 24px;
+            color: #666;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        body.dark .hero .subtitle {
+            color: #999;
+        }
+
+        .hero p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            max-width: 500px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: 1px solid #2c2c2c;
+            background: transparent;
+            color: #2c2c2c;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        body.dark .btn {
+            border-color: #e0e0e0;
+            color: #e0e0e0;
+        }
+
+        .btn:hover {
+            background: #2c2c2c;
+            color: #fff;
+        }
+
+        body.dark .btn:hover {
+            background: #e0e0e0;
+            color: #1a1a1a;
+        }
+
+        .btn-primary {
+            background: #2c2c2c;
+            color: #fff;
+        }
+
+        body.dark .btn-primary {
+            background: #e0e0e0;
+            color: #1a1a1a;
+        }
+
+        /* Experience Section */
+        .experience-item {
+            margin-bottom: 50px;
+            padding-bottom: 50px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        body.dark .experience-item {
+            border-bottom-color: #333;
+        }
+
+        .experience-item:last-child {
+            border-bottom: none;
+        }
+
+        .experience-item h3 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        .experience-item .period {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        body.dark .experience-item .period {
+            color: #999;
+        }
+
+        .experience-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .experience-item ul li {
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 10px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .experience-item ul li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #666;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .project-card {
+            border: 1px solid #e0e0e0;
+            padding: 30px;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        body.dark .project-card {
+            background: #242424;
+            border-color: #333;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        body.dark .project-card:hover {
+            box-shadow: 0 10px 30px rgba(255,255,255,0.05);
+        }
+
+        .project-card h3 {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 15px;
+        }
+
+        .project-card .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .tech-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            background: #f0f0f0;
+            color: #666;
+            border-radius: 3px;
+        }
+
+        body.dark .tech-tag {
+            background: #333;
+            color: #999;
+        }
+
+        .project-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        body.dark .project-card p {
+            color: #999;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .project-links a {
+            font-size: 13px;
+            color: #2c2c2c;
+            text-decoration: none;
+            border-bottom: 1px solid #2c2c2c;
+            padding-bottom: 2px;
+        }
+
+        body.dark .project-links a {
+            color: #e0e0e0;
+            border-bottom-color: #e0e0e0;
+        }
+
+        .project-links a:hover {
+            opacity: 0.6;
+        }
+
+        /* Skills Section */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+        }
+
+        .skill-category h3 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        body.dark .skill-category h3 {
+            border-bottom-color: #333;
+        }
+
+        .skill-category ul {
+            list-style: none;
+        }
+
+        .skill-category ul li {
+            padding: 8px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        body.dark .skill-category ul li {
+            color: #999;
+        }
+
+        /* Contact Section */
+        .contact-info {
+            max-width: 600px;
+        }
+
+        .contact-info p {
+            font-size: 16px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .contact-links a {
+            font-size: 16px;
+            color: #2c2c2c;
+            text-decoration: none;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .contact-links a {
+            color: #e0e0e0;
+            border-bottom-color: #333;
+        }
+
+        .contact-links a:hover {
+            padding-left: 10px;
+            color: #666;
+        }
+
+        body.dark .contact-links a:hover {
+            color: #aaa;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #999;
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                padding: 40px 30px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 40px 30px;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            section {
+                min-height: auto;
+                padding: 60px 0;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            section h2 {
+                font-size: 32px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .noise-bg {
+                right: -30px;
+                width: 70%;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Hi there!</h1>
-    <span class="">
-		<img src="images/construction.png" alt="We Sorry, This Page is Under Construction" />
-	</span>
-    <script src="javascript/app.js"></script>
+    <div class="container">
+        <aside class="sidebar">
+            <div>
+                <div class="logo">
+                    <h1>Samuel RS</h1>
+                    <p>Software Developer</p>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Inicio</a></li>
+                        <li><a href="#experience">Experiencia</a></li>
+                        <li><a href="#projects">Proyectos</a></li>
+                        <li><a href="#skills">Habilidades</a></li>
+                        <li><a href="#contact">Contacto</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="theme-toggle" onclick="toggleTheme()">⬤ Light / Dark</div>
+        </aside>
+
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section id="home" class="hero">
+                <div class="noise-bg"></div>
+                <div class="hero-content">
+                    <h1>Software Developer</h1>
+                    <p class="subtitle">.NET Platform Specialist</p>
+                    <p>Desarrollador con 4 años de experiencia profesional en aplicaciones web con .NET, apasionado por crear soluciones eficientes y escalables. Enfocado en el desarrollo backend con C# y explorando constantemente nuevas tecnologías.</p>
+                    <div class="cta-buttons">
+                        <a href="#projects" class="btn btn-primary">Ver Proyectos</a>
+                        <a href="https://github.com/SamuelSuriel" target="_blank" class="btn">GitHub</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience Section -->
+            <section id="experience">
+                <h2>Experiencia</h2>
+                <div class="experience-item">
+                    <h3>Software Developer</h3>
+                    <p class="period">2021 - Presente (4 años)</p>
+                    <ul>
+                        <li>Desarrollo de aplicaciones web empresariales con ASP.NET Core</li>
+                        <li>Implementación de APIs RESTful y servicios backend escalables</li>
+                        <li>Trabajo con bases de datos SQL Server y Entity Framework</li>
+                        <li>Colaboración en equipos ágiles con metodologías Scrum</li>
+                        <li>Mantenimiento y optimización de aplicaciones legacy</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects">
+                <h2>Proyectos Destacados</h2>
+                
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <h3>PresupuestoFacil ⭐</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">C#</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">SQL Server</span>
+                        </div>
+                        <p>Sistema completo de gestión de presupuestos personales. Cuenta con versión web (JavaScript) y desktop (WinForm). Herramienta eficaz para gestionar finanzas personales de manera efectiva.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/SamuelSuriel/PresupuestoFacil" target="_blank">Ver Código →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>Expenses</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">.NET Core</span>
+                            <span class="tech-tag">C#</span>
+                            <span class="tech-tag">ASP.NET</span>
+                        </div>
+                        <p>Portal web moderno de manejo de gastos desarrollado con .NET Core. Permite registrar, categorizar y analizar gastos personales con una interfaz limpia e intuitiva.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/SamuelSuriel/Expenses" target="_blank">Ver Código →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>Sistema Control de Acceso RFID</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">C++</span>
+                            <span class="tech-tag">Arduino</span>
+                            <span class="tech-tag">ESP8266</span>
+                            <span class="tech-tag">IoT</span>
+                        </div>
+                        <p>Sistema de control de acceso mediante tarjetas RFID con Arduino UNO y NodeMCU. Incluye app móvil para interactuar con el sistema en tiempo real.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/SamuelSuriel/Sistema-de-Control-de-Acceso-RFID-con-Arduino-y-NodeMCU" target="_blank">Ver Código →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>MealPlannerApp</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">C#</span>
+                            <span class="tech-tag">.NET MAUI</span>
+                            <span class="tech-tag">Cross-Platform</span>
+                        </div>
+                        <p>Asistente personal multiplataforma para planificar comidas diarias sin estrés. Desarrollado con .NET MAUI para funcionar en Android, iOS y Windows.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/SamuelSuriel" target="_blank">Ver Más →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>Control de Tareas</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">C#</span>
+                            <span class="tech-tag">WinForms</span>
+                        </div>
+                        <p>Sistema que permite registrar y gestionar tareas pendientes de forma eficiente. Interfaz simple y funcional para aumentar la productividad.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/SamuelSuriel/Control-de-Tareas" target="_blank">Ver Código →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>Notes App - MAUI</h3>
+                        <div class="tech-tags">
+                            <span class="tech-tag">C#</span>
+                            <span class="tech-tag">.NET MAUI</span>
+                        </div>
+                        <p>Aplicación simple de notas desarrollada en .NET MAUI. Demuestra el uso de tecnologías modernas de Microsoft para desarrollo móvil.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/SamuelSuriel/MauiApp-Notes-App-" target="_blank">Ver Código →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <p style="color: #666; font-size: 14px;">
+                    <strong>Más proyectos disponibles en mi <a href="https://github.com/SamuelSuriel?tab=repositories" target="_blank" style="color: inherit; text-decoration: underline;">GitHub</a></strong> - 31 repositorios incluyendo sistemas de inventario, facturación, y más.
+                </p>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills">
+                <h2>Habilidades Técnicas</h2>
+                <div class="skills-container">
+                    <div class="skill-category">
+                        <h3>Backend</h3>
+                        <ul>
+                            <li>.NET Core / ASP.NET Core</li>
+                            <li>C#</li>
+                            <li>Entity Framework</li>
+                            <li>SQL Server</li>
+                            <li>RESTful APIs</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Frontend</h3>
+                        <ul>
+                            <li>JavaScript</li>
+                            <li>TypeScript</li>
+                            <li>HTML5 / CSS3</li>
+                            <li>Responsive Design</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Mobile & Desktop</h3>
+                        <ul>
+                            <li>.NET MAUI</li>
+                            <li>WinForms</li>
+                            <li>Cross-Platform Development</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Otros</h3>
+                        <ul>
+                            <li>Git / GitHub</li>
+                            <li>Arduino / IoT</li>
+                            <li>Visual Basic .NET</li>
+                            <li>Metodologías Ágiles</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact">
+                <h2>Contacto</h2>
+                <div class="contact-info">
+                    <p>¿Interesado en trabajar juntos o tienes alguna pregunta? No dudes en contactarme a través de cualquiera de estos medios.</p>
+                    <div class="contact-links">
+                        <a href="https://github.com/SamuelSuriel" target="_blank">GitHub - @SamuelSuriel</a>
+                        <a href="https://about.me/ramirezsamuel" target="_blank">About.me - ramirezsamuel</a>
+                        <a href="mailto:tu-email@ejemplo.com">Email - Enviar mensaje</a>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <p>© 2024 Samuel RS. Desarrollado con HTML, CSS y JavaScript.</p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark');
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
